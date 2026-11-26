@@ -16,19 +16,20 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ),
-  );
-
   // Initialize persistent Hive storage
   final storageService = StorageService();
   await storageService.init();
   Get.put<StorageService>(storageService, permanent: true);
 
   final themeService = Get.put<ThemeService>(ThemeService(), permanent: true);
+  final launchDark = themeService.currentThemeMode.value != AppThemeMode.light;
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: launchDark ? Brightness.light : Brightness.dark,
+    ),
+  );
 
   runApp(RebsHrmsApp(initialTheme: AppTheme.getTheme(themeService.currentThemeMode.value)));
 }

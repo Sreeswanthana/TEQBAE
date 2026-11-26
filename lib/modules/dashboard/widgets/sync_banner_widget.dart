@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/widgets/brand_art.dart';
+import '../../../app/theme/rebs_look.dart';
+import '../../../app/theme/type_scale.dart';
 import '../../../core/services/connectivity_service.dart';
 import '../../../core/services/sync_service.dart';
-import '../../../app/theme/app_colors.dart';
 
 class SyncBannerWidget extends StatelessWidget {
   const SyncBannerWidget({super.key});
@@ -21,68 +24,54 @@ class SyncBannerWidget extends StatelessWidget {
         return const SizedBox.shrink();
       }
 
+      final offline = !isOnline;
+      final tone = offline ? AppColors.errorRed : const Color(0xFF92400E);
+      final bg = offline ? const Color(0xFFFFF4F4) : RebsLook.amberBg;
+
       return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: !isOnline ? const Color(0xFFFEF2F2) : const Color(0xFFFFFBEB),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: !isOnline ? const Color(0xFFFCA5A5) : const Color(0xFFFDE68A),
-          ),
+          color: bg,
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           children: [
-            Icon(
-              !isOnline ? Icons.cloud_off_rounded : Icons.sync_problem_rounded,
-              color: !isOnline ? AppColors.errorRed : AppColors.checkOutAmber,
-              size: 22,
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+              child: BrandIcon(offline ? BrandArt.offline : BrandArt.sync, size: 28),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    !isOnline ? 'Offline Workspace Active' : '$pendingCount Pending Record(s) to Sync',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: !isOnline ? AppColors.errorRed : const Color(0xFF92400E),
-                    ),
+                    offline ? 'Offline Workspace Active' : '$pendingCount Pending Record(s) to Sync',
+                    style: TypeScale.body(size: 13, weight: FontWeight.w700, color: tone),
                   ),
+                  const SizedBox(height: 2),
                   Text(
-                    !isOnline
+                    offline
                         ? 'Attendance actions will be saved locally and synced once online.'
                         : 'Local attendance saved. Tap Sync Now to commit to server.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey.shade700,
-                    ),
+                    style: TypeScale.body(size: 11, weight: FontWeight.w400, color: const Color(0xFF57534E)),
                   ),
                 ],
               ),
             ),
             if (pendingCount > 0 && isOnline)
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                onPressed: isSyncing
-                    ? null
-                    : () async {
-                        await syncService.syncPendingQueue();
-                      },
+              TextButton(
+                onPressed: isSyncing ? null : () => syncService.syncPendingQueue(),
                 child: isSyncing
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 14,
                         height: 14,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        child: CircularProgressIndicator(strokeWidth: 2, color: RebsLook.action),
                       )
-                    : const Text('Sync Now', style: TextStyle(fontSize: 12)),
+                    : Text('Sync Now', style: TypeScale.body(size: 12, weight: FontWeight.w700, color: RebsLook.action)),
               ),
           ],
         ),

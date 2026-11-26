@@ -12,7 +12,7 @@ enum AppThemeMode {
 }
 
 class ThemeService extends GetxService {
-  final Rx<AppThemeMode> currentThemeMode = AppThemeMode.light.obs;
+  final Rx<AppThemeMode> currentThemeMode = AppThemeMode.dark.obs;
 
   ThemeService() {
     _loadSavedTheme();
@@ -182,6 +182,16 @@ class ThemeService extends GetxService {
     }
   }
 
+  Color get onPrimary {
+    switch (currentThemeMode.value) {
+      case AppThemeMode.eyeComfort:
+        return const Color(0xFF181512);
+      case AppThemeMode.light:
+      case AppThemeMode.dark:
+        return const Color(0xFFFFFFFF);
+    }
+  }
+
   Color get navBarBg {
     switch (currentThemeMode.value) {
       case AppThemeMode.light:
@@ -241,6 +251,7 @@ class ThemeHelper {
   static Color get textPrimary => service.textPrimary;
   static Color get textSecondary => service.textSecondary;
   static Color get primaryColor => service.primaryColor;
+  static Color get onPrimary => service.onPrimary;
   static Color get navBarBg => service.navBarBg;
   static LinearGradient get headerGradient => service.headerGradient;
 

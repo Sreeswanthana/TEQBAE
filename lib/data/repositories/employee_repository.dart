@@ -12,6 +12,12 @@ class EmployeeRepository {
     // 1. Check local cache first if not forced
     final cached = _localDataSource.getCachedEmployee();
     if (cached != null && !forceRefresh) {
+      if (cached.name == 'Alex Johnson') {
+        final updated = EmployeeModel.defaultEmployee();
+        await _localDataSource.cacheEmployee(updated);
+        _refreshInBackground();
+        return updated;
+      }
       // Background refresh can happen asynchronously
       _refreshInBackground();
       return cached;

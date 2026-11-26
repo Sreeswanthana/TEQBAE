@@ -17,7 +17,7 @@ class AppTheme {
   }
 
   static ThemeData get lightTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme();
+    final baseTextTheme = GoogleFonts.poppinsTextTheme();
 
     return ThemeData(
       useMaterial3: true,
@@ -36,7 +36,7 @@ class AppTheme {
         centerTitle: false,
         scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: GoogleFonts.poppins(
           fontSize: 15.5,
           fontWeight: FontWeight.w700,
           color: AppColors.textPrimary,
@@ -60,9 +60,9 @@ class AppTheme {
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: GoogleFonts.poppins(
             fontSize: 13.5,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.1,
@@ -74,81 +74,81 @@ class AppTheme {
         fillColor: Colors.white,
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: AppColors.primary, width: 1.8),
         ),
-        hintStyle: GoogleFonts.inter(
+        hintStyle: GoogleFonts.poppins(
           color: AppColors.textTertiary,
           fontSize: 12.5,
         ),
       ),
       textTheme: baseTextTheme.copyWith(
-        headlineMedium: GoogleFonts.inter(
+        headlineMedium: GoogleFonts.poppins(
           fontSize: 19,
           fontWeight: FontWeight.w700,
           color: AppColors.textPrimary,
           letterSpacing: -0.3,
         ),
-        headlineSmall: GoogleFonts.inter(
+        headlineSmall: GoogleFonts.poppins(
           fontSize: 16,
           fontWeight: FontWeight.w700,
           color: AppColors.textPrimary,
           letterSpacing: -0.2,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: GoogleFonts.poppins(
           fontSize: 15,
           fontWeight: FontWeight.w700,
           color: AppColors.textPrimary,
           letterSpacing: -0.2,
         ),
-        titleMedium: GoogleFonts.inter(
+        titleMedium: GoogleFonts.poppins(
           fontSize: 13.5,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
           letterSpacing: -0.1,
         ),
-        titleSmall: GoogleFonts.inter(
+        titleSmall: GoogleFonts.poppins(
           fontSize: 12,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
         ),
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: GoogleFonts.poppins(
           fontSize: 13.5,
           fontWeight: FontWeight.w400,
           color: AppColors.textPrimary,
           letterSpacing: -0.1,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: GoogleFonts.poppins(
           fontSize: 12,
           fontWeight: FontWeight.w400,
           color: AppColors.textSecondary,
         ),
-        bodySmall: GoogleFonts.inter(
+        bodySmall: GoogleFonts.poppins(
           fontSize: 10.5,
           fontWeight: FontWeight.w400,
           color: AppColors.textTertiary,
         ),
-        labelLarge: GoogleFonts.inter(
+        labelLarge: GoogleFonts.poppins(
           fontSize: 12.5,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
           letterSpacing: 0.1,
         ),
-        labelMedium: GoogleFonts.inter(
+        labelMedium: GoogleFonts.poppins(
           fontSize: 11,
           fontWeight: FontWeight.w600,
           color: AppColors.textSecondary,
           letterSpacing: 0.2,
         ),
-        labelSmall: GoogleFonts.inter(
+        labelSmall: GoogleFonts.poppins(
           fontSize: 9.5,
           fontWeight: FontWeight.w600,
           color: AppColors.textSecondary,
@@ -159,13 +159,13 @@ class AppTheme {
         height: 62,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return GoogleFonts.inter(
+            return GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: AppColors.primary,
             );
           }
-          return GoogleFonts.inter(
+          return GoogleFonts.poppins(
             fontSize: 10.5,
             fontWeight: FontWeight.w500,
             color: AppColors.textSecondary,
@@ -176,7 +176,7 @@ class AppTheme {
   }
 
   static ThemeData get darkTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme(ThemeData.dark().textTheme);
+    final baseTextTheme = GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme);
 
     return ThemeData(
       useMaterial3: true,
@@ -195,7 +195,7 @@ class AppTheme {
         centerTitle: false,
         scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: GoogleFonts.poppins(
           fontSize: 15.5,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFF8FAFC),
@@ -219,9 +219,9 @@ class AppTheme {
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: GoogleFonts.poppins(
             fontSize: 13.5,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.1,
@@ -233,81 +233,81 @@ class AppTheme {
         fillColor: const Color(0xFF1E293B),
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFF334155)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFF334155)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 1.8),
         ),
-        hintStyle: GoogleFonts.inter(
+        hintStyle: GoogleFonts.poppins(
           color: const Color(0xFF94A3B8),
           fontSize: 12.5,
         ),
       ),
       textTheme: baseTextTheme.copyWith(
-        headlineMedium: GoogleFonts.inter(
+        headlineMedium: GoogleFonts.poppins(
           fontSize: 19,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFF8FAFC),
           letterSpacing: -0.3,
         ),
-        headlineSmall: GoogleFonts.inter(
+        headlineSmall: GoogleFonts.poppins(
           fontSize: 16,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFF8FAFC),
           letterSpacing: -0.2,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: GoogleFonts.poppins(
           fontSize: 15,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFF8FAFC),
           letterSpacing: -0.2,
         ),
-        titleMedium: GoogleFonts.inter(
+        titleMedium: GoogleFonts.poppins(
           fontSize: 13.5,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFF8FAFC),
           letterSpacing: -0.1,
         ),
-        titleSmall: GoogleFonts.inter(
+        titleSmall: GoogleFonts.poppins(
           fontSize: 12,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFF8FAFC),
         ),
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: GoogleFonts.poppins(
           fontSize: 13.5,
           fontWeight: FontWeight.w400,
           color: const Color(0xFFF8FAFC),
           letterSpacing: -0.1,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: GoogleFonts.poppins(
           fontSize: 12,
           fontWeight: FontWeight.w400,
           color: const Color(0xFF94A3B8),
         ),
-        bodySmall: GoogleFonts.inter(
+        bodySmall: GoogleFonts.poppins(
           fontSize: 10.5,
           fontWeight: FontWeight.w400,
           color: const Color(0xFF64748B),
         ),
-        labelLarge: GoogleFonts.inter(
+        labelLarge: GoogleFonts.poppins(
           fontSize: 12.5,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFF8FAFC),
           letterSpacing: 0.1,
         ),
-        labelMedium: GoogleFonts.inter(
+        labelMedium: GoogleFonts.poppins(
           fontSize: 11,
           fontWeight: FontWeight.w600,
           color: const Color(0xFF94A3B8),
           letterSpacing: 0.2,
         ),
-        labelSmall: GoogleFonts.inter(
+        labelSmall: GoogleFonts.poppins(
           fontSize: 9.5,
           fontWeight: FontWeight.w600,
           color: const Color(0xFF94A3B8),
@@ -318,13 +318,13 @@ class AppTheme {
         height: 62,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return GoogleFonts.inter(
+            return GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: const Color(0xFF3B82F6),
             );
           }
-          return GoogleFonts.inter(
+          return GoogleFonts.poppins(
             fontSize: 10.5,
             fontWeight: FontWeight.w500,
             color: const Color(0xFF94A3B8),
@@ -335,7 +335,7 @@ class AppTheme {
   }
 
   static ThemeData get eyeComfortTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme(ThemeData.dark().textTheme);
+    final baseTextTheme = GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme);
 
     return ThemeData(
       useMaterial3: true,
@@ -354,7 +354,7 @@ class AppTheme {
         centerTitle: false,
         scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: GoogleFonts.poppins(
           fontSize: 15.5,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFFDF6E2),
@@ -378,9 +378,9 @@ class AppTheme {
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: GoogleFonts.poppins(
             fontSize: 13.5,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.1,
@@ -392,81 +392,81 @@ class AppTheme {
         fillColor: const Color(0xFF26221D),
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFF3D352E)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFF3D352E)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFFF59E0B), width: 1.8),
         ),
-        hintStyle: GoogleFonts.inter(
+        hintStyle: GoogleFonts.poppins(
           color: const Color(0xFFD4B996),
           fontSize: 12.5,
         ),
       ),
       textTheme: baseTextTheme.copyWith(
-        headlineMedium: GoogleFonts.inter(
+        headlineMedium: GoogleFonts.poppins(
           fontSize: 19,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFFDF6E2),
           letterSpacing: -0.3,
         ),
-        headlineSmall: GoogleFonts.inter(
+        headlineSmall: GoogleFonts.poppins(
           fontSize: 16,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFFDF6E2),
           letterSpacing: -0.2,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: GoogleFonts.poppins(
           fontSize: 15,
           fontWeight: FontWeight.w700,
           color: const Color(0xFFFDF6E2),
           letterSpacing: -0.2,
         ),
-        titleMedium: GoogleFonts.inter(
+        titleMedium: GoogleFonts.poppins(
           fontSize: 13.5,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFFDF6E2),
           letterSpacing: -0.1,
         ),
-        titleSmall: GoogleFonts.inter(
+        titleSmall: GoogleFonts.poppins(
           fontSize: 12,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFFDF6E2),
         ),
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: GoogleFonts.poppins(
           fontSize: 13.5,
           fontWeight: FontWeight.w400,
           color: const Color(0xFFFDF6E2),
           letterSpacing: -0.1,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: GoogleFonts.poppins(
           fontSize: 12,
           fontWeight: FontWeight.w400,
           color: const Color(0xFFD4B996),
         ),
-        bodySmall: GoogleFonts.inter(
+        bodySmall: GoogleFonts.poppins(
           fontSize: 10.5,
           fontWeight: FontWeight.w400,
           color: const Color(0xFF9E8B75),
         ),
-        labelLarge: GoogleFonts.inter(
+        labelLarge: GoogleFonts.poppins(
           fontSize: 12.5,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFFDF6E2),
           letterSpacing: 0.1,
         ),
-        labelMedium: GoogleFonts.inter(
+        labelMedium: GoogleFonts.poppins(
           fontSize: 11,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFD4B996),
           letterSpacing: 0.2,
         ),
-        labelSmall: GoogleFonts.inter(
+        labelSmall: GoogleFonts.poppins(
           fontSize: 9.5,
           fontWeight: FontWeight.w600,
           color: const Color(0xFFD4B996),
@@ -477,13 +477,13 @@ class AppTheme {
         height: 62,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return GoogleFonts.inter(
+            return GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: const Color(0xFFF59E0B),
             );
           }
-          return GoogleFonts.inter(
+          return GoogleFonts.poppins(
             fontSize: 10.5,
             fontWeight: FontWeight.w500,
             color: const Color(0xFFD4B996),

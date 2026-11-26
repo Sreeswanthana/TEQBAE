@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../app/theme/rebs_look.dart';
+import '../../../app/theme/theme_helper.dart';
+import '../../../app/theme/type_scale.dart';
+import '../../../app/widgets/app_drawer.dart';
+import '../../../app/widgets/brand_art.dart';
+import '../../../app/widgets/chrome_actions.dart';
+import '../../../app/widgets/page_shimmer.dart';
+import '../../../app/widgets/screen_frame.dart';
 import '../../../data/models/attendance_event_model.dart';
 import '../../../data/models/attendance_record_model.dart';
-import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/theme_helper.dart';
 import '../controllers/history_controller.dart';
 
 class HistoryView extends GetView<HistoryController> {
@@ -13,310 +19,178 @@ class HistoryView extends GetView<HistoryController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      final _ = ThemeHelper.mode;
       return Scaffold(
-        backgroundColor: ThemeHelper.background,
-        appBar: AppBar(
-          backgroundColor: ThemeHelper.background,
-          elevation: 0,
-          iconTheme: IconThemeData(color: ThemeHelper.textPrimary),
-          title: Text(
-            'Attendance History',
-            style: TextStyle(
-              color: ThemeHelper.textPrimary,
-              fontWeight: FontWeight.w700,
-              fontSize: 15.5,
-              letterSpacing: -0.2,
-            ),
-          ),
-        ),
-        body: Column(
+        extendBody: true,
+        backgroundColor: RebsLook.canvas,
+        drawer: const AppDrawer(),
+        appBar: const RebsAppBar(title: 'Attendance History', actions: [ChromeActions()]),
+        body: ScreenFrame(
+          child: Column(
           children: [
-            // Filter Chips Row
-            _buildFilterBar(),
-
-            // Records List
+            const _Filters(),
             Expanded(
-              child: Obx(() {
-                if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator(color: AppColors.primary));
-                }
-
-                final records = controller.filteredRecords;
-
-                if (records.isEmpty) {
-                  return _buildEmptyState();
-                }
-
-                return RefreshIndicator(
-                  onRefresh: () => controller.loadHistory(),
-                  color: AppColors.primary,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                    itemCount: records.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final record = records[index];
-                      return _buildHistoryCard(record);
-                    },
-                  ),
-                );
-              }),
+              child: controller.isLoading.value
+                  ? const HistoryPageShimmer()
+                  : controller.filteredRecords.isEmpty
+                      ? _Empty(filter: controller.selectedFilter.value)
+                      : RefreshIndicator(
+                          color: RebsLook.action,
+                          onRefresh: controller.loadHistory,
+                          child: ListView.separated(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 120),
+                            itemCount: controller.filteredRecords.length,
+                            separatorBuilder: (_, __) => const SizedBox(height: 10),
+                            itemBuilder: (_, index) => _Card(record: controller.filteredRecords[index]),
+                          ),
+                        ),
             ),
           ],
+          ),
+        ),
+        bottomNavigationBar: const RebsDock(),
+      );
+    });
+  }
+}
+
+class _Filters extends StatelessWidget {
+  const _Filters();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<HistoryController>();
+    const filters = ['All', 'Synced', 'Pending', 'Rejected'];
+    return Obx(() {
+      final active = controller.selectedFilter.value;
+      return SizedBox(
+        height: 48,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          itemCount: filters.length,
+          separatorBuilder: (_, __) => const SizedBox(width: 8),
+          itemBuilder: (_, i) {
+            final f = filters[i];
+            final selected = active == f;
+            return ChoiceChip(
+              label: Text(f),
+              selected: selected,
+              showCheckmark: false,
+              labelStyle: TypeScale.body(
+                size: 12,
+                weight: FontWeight.w700,
+                color: selected ? RebsLook.onAction : RebsLook.inkColor,
+              ),
+              selectedColor: RebsLook.action,
+              backgroundColor: RebsLook.card,
+              side: BorderSide(color: selected ? RebsLook.action : RebsLook.lineColor),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              onSelected: (_) => controller.setFilter(f),
+            );
+          },
         ),
       );
     });
   }
+}
 
-  Widget _buildFilterBar() {
-    final filters = ['All', 'Synced', 'Pending', 'Rejected'];
+class _Card extends StatelessWidget {
+  const _Card({required this.record});
+  final AttendanceRecordModel record;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: ThemeHelper.cardColor,
-        border: Border(bottom: BorderSide(color: ThemeHelper.cardBorder)),
-      ),
-      child: Obx(() {
-        final active = controller.selectedFilter.value;
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: filters.map((f) {
-              final isSelected = active == f;
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: ChoiceChip(
-                  label: Text(
-                    f,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected ? Colors.white : ThemeHelper.textPrimary,
-                    ),
-                  ),
-                  selected: isSelected,
-                  selectedColor: AppColors.primary,
-                  backgroundColor: ThemeHelper.surfaceVariant,
-                  showCheckmark: false,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(
-                      color: isSelected ? AppColors.primary : ThemeHelper.cardBorder,
-                    ),
-                  ),
-                  onSelected: (_) => controller.setFilter(f),
-                ),
-              );
-            }).toList(),
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildHistoryCard(AttendanceRecordModel record) {
-    DateTime? parsedDate;
+  @override
+  Widget build(BuildContext context) {
+    DateTime? parsed;
     try {
-      parsedDate = DateTime.parse(record.date);
+      parsed = DateTime.parse(record.date);
     } catch (_) {}
-
-    final dateStr = parsedDate != null
-        ? DateFormat('EEEE, MMM dd, yyyy').format(parsedDate)
-        : record.date;
-
-    final timeFormat = DateFormat('hh:mm a');
-    final inTime = record.checkInTime != null ? timeFormat.format(record.checkInTime!) : '--:--';
-    final outTime = record.checkOutTime != null ? timeFormat.format(record.checkOutTime!) : '--:--';
-
-    Color badgeBg;
-    Color badgeText;
-    String badgeTitle;
-    IconData badgeIcon;
-
-    switch (record.syncStatus) {
-      case SyncStatus.pending:
-        badgeBg = AppColors.statusPendingBg;
-        badgeText = AppColors.statusPendingText;
-        badgeTitle = 'Pending Sync';
-        badgeIcon = Icons.hourglass_top_rounded;
-        break;
-      case SyncStatus.rejected:
-        badgeBg = AppColors.statusRejectedBg;
-        badgeText = AppColors.statusRejectedText;
-        badgeTitle = 'Rejected';
-        badgeIcon = Icons.error_outline_rounded;
-        break;
-      case SyncStatus.synced:
-        badgeBg = AppColors.statusSyncedBg;
-        badgeText = AppColors.statusSyncedText;
-        badgeTitle = 'Synced';
-        badgeIcon = Icons.check_circle_rounded;
-        break;
-    }
+    final date = parsed != null ? DateFormat('dd MMM yyyy').format(parsed) : record.date;
+    final time = DateFormat('hh:mm a');
+    final inn = record.checkInTime != null ? time.format(record.checkInTime!) : '--:--';
+    final out = record.checkOutTime != null ? time.format(record.checkOutTime!) : '--:--';
+    final (label, fg, bg) = switch (record.syncStatus) {
+      SyncStatus.pending => ('Pending', RebsLook.amber, RebsLook.amberBg),
+      SyncStatus.rejected => ('Rejected', RebsLook.rose, RebsLook.roseBg),
+      SyncStatus.synced => ('Synced', RebsLook.green, RebsLook.mint),
+    };
 
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: ThemeHelper.cardColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: ThemeHelper.cardBorder),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      padding: const EdgeInsets.all(14),
+      decoration: RebsLook.cardBox(radius: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row: Date & Status Badge
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(
-                  dateStr,
-                  style: TextStyle(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.1,
-                    color: ThemeHelper.textPrimary,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
+                child: BrandIcon(
+                  record.syncStatus == SyncStatus.pending ? BrandArt.sync : BrandArt.calendarCheck,
+                  size: 22,
                 ),
               ),
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                decoration: BoxDecoration(
-                  color: badgeBg,
-                  borderRadius: BorderRadius.circular(7),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(badgeIcon, color: badgeText, size: 11),
-                    const SizedBox(width: 4),
+                    Text(date, style: TypeScale.body(size: 14, weight: FontWeight.w700, color: RebsLook.inkColor)),
                     Text(
-                      badgeTitle,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: badgeText,
-                      ),
+                      'In $inn   •   Out $out',
+                      style: TypeScale.body(size: 12, weight: FontWeight.w400, color: RebsLook.muteColor),
                     ),
                   ],
                 ),
               ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(20)),
+                child: Text(label, style: TypeScale.body(size: 11, weight: FontWeight.w700, color: fg)),
+              ),
             ],
           ),
-          const SizedBox(height: 12),
-
-          // In / Out & Duration Grid
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: ThemeHelper.surfaceVariant,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Check-in', style: TextStyle(fontSize: 10, color: ThemeHelper.textSecondary)),
-                      const SizedBox(height: 2),
-                      Text(
-                        inTime,
-                        style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: ThemeHelper.textPrimary),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(width: 1, height: 26, color: ThemeHelper.cardBorder),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Check-out', style: TextStyle(fontSize: 10, color: ThemeHelper.textSecondary)),
-                      const SizedBox(height: 2),
-                      Text(
-                        outTime,
-                        style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: ThemeHelper.textPrimary),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(width: 1, height: 26, color: ThemeHelper.cardBorder),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Duration', style: TextStyle(fontSize: 10, color: ThemeHelper.textSecondary)),
-                      const SizedBox(height: 2),
-                      Text(
-                        record.formattedWorkingHours,
-                        style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: AppColors.primary),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(height: 8),
+          Text(
+            'Duration  ${record.formattedWorkingHours}',
+            style: TypeScale.body(size: 12, weight: FontWeight.w600, color: RebsLook.action),
           ),
-
           if (record.rejectionReason != null && record.rejectionReason!.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.statusRejectedBg,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.warning_amber_rounded, size: 14, color: AppColors.errorRed),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      'Rejection reason: ${record.rejectionReason}',
-                      style: const TextStyle(fontSize: 10.5, color: AppColors.statusRejectedText),
-                    ),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 6),
+            Text(
+              'Rejection reason: ${record.rejectionReason}',
+              style: TypeScale.body(size: 12, weight: FontWeight.w600, color: RebsLook.rose),
             ),
           ],
         ],
       ),
     );
   }
+}
 
-  Widget _buildEmptyState() {
+class _Empty extends StatelessWidget {
+  const _Empty({required this.filter});
+  final String filter;
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(28),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.history_toggle_off_rounded, size: 48, color: ThemeHelper.textSecondary.withValues(alpha: 0.4)),
-            const SizedBox(height: 12),
+            const BrandIcon(BrandArt.document, size: 56),
+            const SizedBox(height: 8),
+            Text('No Attendance Records', style: TypeScale.body(size: 16, weight: FontWeight.w700, color: RebsLook.inkColor)),
+            const SizedBox(height: 4),
             Text(
-              'No Attendance Records',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: ThemeHelper.textPrimary),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'No records match the current filter (${controller.selectedFilter.value}).',
+              'No records match the current filter ($filter).',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 11.5, color: ThemeHelper.textSecondary),
+              style: TypeScale.body(size: 13, weight: FontWeight.w400, color: RebsLook.muteColor),
             ),
           ],
         ),

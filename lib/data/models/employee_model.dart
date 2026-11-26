@@ -22,7 +22,7 @@ class EmployeeModel {
   factory EmployeeModel.fromJson(Map<String, dynamic> json) {
     return EmployeeModel(
       id: json['id'] as String? ?? 'EMP-4092',
-      name: json['name'] as String? ?? 'Alex Johnson',
+      name: json['name'] as String? ?? 'Sree Swanthana',
       department: json['department'] as String? ?? 'Mobile Engineering',
       role: json['role'] as String? ?? 'Senior Flutter Developer',
       email: json['email'] as String? ?? 'alex.johnson@rebs.io',
@@ -54,7 +54,7 @@ class EmployeeModel {
   static EmployeeModel defaultEmployee() {
     return EmployeeModel(
       id: 'EMP-4092',
-      name: 'Alex Johnson',
+      name: 'Sree Swanthana',
       department: 'Mobile Engineering',
       role: 'Senior Flutter Developer',
       email: 'alex.johnson@rebs.io',
